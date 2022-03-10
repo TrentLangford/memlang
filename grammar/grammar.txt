@@ -1,0 +1,6 @@
+_op ADD SUB DIV MUL MOD
+_mem SET LBL GOTO
+_print PUT SHOW
+_number {num}
+_default {def}
+end

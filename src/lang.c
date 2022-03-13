@@ -14,26 +14,28 @@ char *ordered_tokens[] =
     "SHOW"
 };
 
-int *expectedArguments[] = 
-{
-    {2},        // ADD
-    {2},        // SUB
-    {2},        // DIV
-    {2},        // MUL
-    {2},        // MOD
-    {2},        // SET
-    {1},        // LBL
-    {2, 3},     // GOTO
-    {1},        // PUT
-    {1}         // SHOW
-};
+// Argument count includes the initial token and the additional arguments
 
+int expected_args[] = 
+{
+    3,      // ADD
+    3,      // SUB
+    3,      // DIV
+    3,      // MUL
+    3,      // MOD
+    3,      // SET
+    2,      // LBL
+    3,      // GOTO
+    2,      // PUT
+    2,      // SHOW
+};
 
 compileResults_t compileTokens(token *tokens, int count)
 {
     v_count = 0;
     l_count = 0;
     next_location = 0;
+    arg_count = 0;
     compileResults_t results;
 
     results.bytes = malloc(sizeof(u_int8_t) * count);
@@ -49,8 +51,23 @@ compileResults_t compileTokens(token *tokens, int count)
             {
                 results.bytes[results.bytec] = (uint8_t)(n + 1);
                 results.bytec++;
+                if (arg_count == 0)
+                {
+                    arg_count = expected_args[n];
+                    last_op = i;
+                }
+                else
+                {
+                    results.errCode = 2;
+                    results.errMessage = malloc(sizeof(char) * strlen("Incorrect number of arguments"));
+                    strcpy(results.errMessage, "Incorrect number of arguments");
+                    results.errToken = tokens[last_op];
+                    break;
+                }
             }
         }
+
+        if (results.errCode != 0) break;
 
         if (strcmp(tokens[i].type, "_number") == 0)
         {
@@ -68,7 +85,6 @@ compileResults_t compileTokens(token *tokens, int count)
                 {
                     if (strcmp(variables[x].name, tokens[i].value) == 0)
                     {
-                        printf("referenced variable %s\n", variables[x].name);
                         results.bytes[results.bytec] = variables[x].location;
                         results.bytec++;
                         is_def = 1;
@@ -78,7 +94,6 @@ compileResults_t compileTokens(token *tokens, int count)
 
                 if (!is_def)
                 {
-                    printf("creating variable\n");
                     variable_t var;
                     var.name = malloc(sizeof(char) * strlen(tokens[i].value));
                     strcpy(var.name, tokens[i].value);
@@ -97,7 +112,6 @@ compileResults_t compileTokens(token *tokens, int count)
                 {
                     if (strcmp(labels[x].name, tokens[i].value) == 0)
                     {
-                        printf("referenced label %s\n", labels[x].name);
                         results.bytes[results.bytec] = labels[x].location;
                         results.bytec++;
                         is_def = 1;
@@ -107,7 +121,6 @@ compileResults_t compileTokens(token *tokens, int count)
 
                 if (!is_def)
                 {
-                    printf("creating label\n");
                     label_t lb;
                     lb.name = malloc(sizeof(char) * strlen(tokens[i].value));
                     strcpy(lb.name, tokens[i].value);
@@ -128,6 +141,8 @@ compileResults_t compileTokens(token *tokens, int count)
                 break;
             }
         }
+        arg_count--;
+        usleep(SLEEPTIME);
     }
 
     return results;

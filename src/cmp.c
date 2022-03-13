@@ -57,22 +57,18 @@ int main(int argc, char **argv)
             token *tokens = realloc(tokens, tsize * 2);
             tsize *= 2;
         }
-        printf("{ %s:%s }\n", current.type, current.value);
     }
 
-    printf("%d\n", tcount);
     compileResults_t results = compileTokens(tokens, tcount);
 
     if (results.errCode == 0)
     {
-        for (int i = 0; i < results.bytec; i++)
-        {
-            printf("Byte %d\n", (int)results.bytes[i]);
-        }
+        printf("Compilation success\n");
     }
     else
     {
-        printf("Compile error %d: %s, token %s(%s)\n", results.errCode, results.errMessage, results.errToken.type, results.errToken.value);
+        printf("Compile error %d: %s at %s\n", results.errCode, results.errMessage, results.errToken.value);
+        return results.errCode;
     }
 
     fclose(input);

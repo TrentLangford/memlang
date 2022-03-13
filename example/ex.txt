@@ -1,7 +1,13 @@
 ADD $bruh 100
 
+SET $bruh 100
+
 SUB $bruh 100
 
 LBL #jmp
+
 PUT $bruh
+
+SHOW $bruh
+
 GOTO #jmp

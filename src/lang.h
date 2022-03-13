@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define SLEEPTIME 500000
+
 typedef struct compileResults_t
 {
     u_int8_t *bytes;
@@ -28,6 +30,10 @@ variable_t variables[256];
 int v_count;
 label_t labels[256];
 int l_count;
+
+int arg_count;
+
+int last_op;
 
 uint8_t next_location;
 

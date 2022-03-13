@@ -1,5 +1,6 @@
 #include "common.h"
 #include "byte.h"
+#include "lang.h"
 
 // This program compiles the file into bytecode
 // arguments are: input file, output binary
@@ -57,6 +58,21 @@ int main(int argc, char **argv)
             tsize *= 2;
         }
         printf("{ %s:%s }\n", current.type, current.value);
+    }
+
+    printf("%d\n", tcount);
+    compileResults_t results = compileTokens(tokens, tcount);
+
+    if (results.errCode == 0)
+    {
+        for (int i = 0; i < results.bytec; i++)
+        {
+            printf("Byte %d\n", (int)results.bytes[i]);
+        }
+    }
+    else
+    {
+        printf("Compile error %d: %s, token %s(%s)\n", results.errCode, results.errMessage, results.errToken.type, results.errToken.value);
     }
 
     fclose(input);

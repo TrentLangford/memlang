@@ -3,17 +3,34 @@
 
 #include "common.h"
 
-uint8_t heap[2048];
-uint8_t stack[256];
-uint8_t stackptr;
+typedef struct compileResults_t
+{
+    u_int8_t *bytes;
+    int bytec;
+    int errCode;
+    char *errMessage;
+    token errToken;
+} compileResults_t;
 
-uint8_t heapGet(int adr);
-uint8_t stackGet();
+typedef struct variable_t
+{
+    char *name;
+    uint8_t location;
+} variable_t;
 
-void heapSet(int adr);
-void stackSet();
+typedef struct label_t
+{
+    char *name;
+    uint8_t location;
+} label_t;
 
-void stackPush(uint8_t val);
-uint8_t stackPop();
+variable_t variables[256];
+int v_count;
+label_t labels[256];
+int l_count;
+
+uint8_t next_location;
+
+compileResults_t compileTokens(token *tokens, int count);
 
 #endif

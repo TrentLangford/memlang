@@ -1,7 +1,9 @@
 
+testcmp: cmp
+	bin/cmp.out example/ex.txt example/ex.bin
 
 cmp: cls common slap
-	gcc -g -c src/cmp.c src -o bin/cmp.o
+	gcc -g -c src/cmp.c -o bin/cmp.o
 	gcc -g bin/cmp.o bin/byte.o bin/kernel.o bin/lang.o slap/bin/token.o slap/bin/gram.o -o bin/cmp.out
 
 cls:

@@ -71,6 +71,11 @@ int main(int argc, char **argv)
         return results.errCode;
     }
 
+    int elements_written = fwrite(results.bytes, sizeof(uint8_t), results.bytec, output);
+    usleep(SLEEPTIME * results.bytec);
+    if (elements_written == results.bytec) printf("Write success\n");
+    else printf("Write failure\n");
+
     fclose(input);
     fclose(output);
 

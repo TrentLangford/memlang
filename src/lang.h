@@ -7,7 +7,7 @@
 
 typedef struct compileResults_t
 {
-    u_int8_t *bytes;
+    uint8_t *bytes;
     int bytec;
     int errCode;
     char *errMessage;

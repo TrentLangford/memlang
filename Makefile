@@ -1,4 +1,11 @@
 
+testrun: run
+	bin/run.out example/ex.bin
+
+run: cls common slap
+	gcc -g -c src/run.c -o bin/run.o
+	gcc -g bin/run.o bin/byte.o bin/kernel.o bin/lang.o slap/bin/token.o slap/bin/gram.o -o bin/run.out
+
 testcmp: cmp
 	bin/cmp.out example/ex.txt example/ex.bin
 

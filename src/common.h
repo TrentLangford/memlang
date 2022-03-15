@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
 #include "../slap/src/gram.h"
 #include "../slap/src/token.h"
 

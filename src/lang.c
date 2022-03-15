@@ -141,8 +141,9 @@ compileResults_t compileTokens(token *tokens, int count)
                 break;
             }
         }
+        printf("Byte %d token %s(%s)\n", results.bytes[results.bytec-1], tokens[i].type, tokens[i].value);
         arg_count--;
-        usleep(SLEEPTIME);
+        usleep(SLEEPTIME * (flags > 0 ? flags : 1));
     }
 
     return results;

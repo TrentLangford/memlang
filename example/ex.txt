@@ -10,4 +10,4 @@ PUT $bruh
 
 SHOW $bruh
 
-GOTO #jmp
+GOTO #jmp $bruh

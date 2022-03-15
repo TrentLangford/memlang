@@ -37,6 +37,8 @@ int last_op;
 
 uint8_t next_location;
 
+extern uint8_t flags;
+
 compileResults_t compileTokens(token *tokens, int count);
 
 #endif

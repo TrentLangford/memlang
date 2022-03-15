@@ -3,17 +3,46 @@
 #include "lang.h"
 
 // This program compiles the file into bytecode
-// arguments are: input file, output binary
+// arguments are: input file, output binary    
+
+uint8_t flags = 0;
+
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+    if (argc < 3)
     {
         printf("Incorrect number of arguments\n");
         return 1;
     }
 
-    FILE *input = fopen(argv[1], "r");
-    FILE *output = fopen(argv[2], "wb");
+    int infn = 0;
+    int outfn = 0;
+
+    char *flagsOrdered[] = {"-f", "-b", "-e", "-c"};
+
+    for (int i = 1; i < argc; i++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
+            if (strcmp(argv[i], flagsOrdered[x]) == 0)
+            {
+                double res = pow(2, x);
+                flags += res;
+            }
+            else if (strcmp(argv[i], "-o") == 0 && outfn == 0)
+            {
+                outfn = i + 1;
+            }
+            else if (infn == 0)
+            {
+                infn = i;
+            }
+        }
+    }
+
+
+    FILE *input = fopen(argv[infn], "r");
+    FILE *output = fopen(argv[outfn], "wb");
 
     FILE *grammar = fopen("rules.bin", "rb");
 
@@ -71,8 +100,9 @@ int main(int argc, char **argv)
         return results.errCode;
     }
 
+    fwrite(&flags, sizeof(uint8_t), 1, output);
     int elements_written = fwrite(results.bytes, sizeof(uint8_t), results.bytec, output);
-    usleep(SLEEPTIME * results.bytec);
+    usleep(SLEEPTIME * results.bytec * (flags > 0 ? flags : 1));
     if (elements_written == results.bytec) printf("Write success\n");
     else printf("Write failure\n");
 

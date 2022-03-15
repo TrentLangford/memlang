@@ -1,4 +1,5 @@
 #include "common.h"
+#include "byte.h"
 
 int main(int argc, char **argv)
 {
@@ -23,13 +24,29 @@ int main(int argc, char **argv)
 
     rewind(input);
 
-    uint8_t *bytes = malloc(sizeof(uint8_t) * length);
+    uint8_t flags = 0;
+    fread(&flags, sizeof(uint8_t), 1, input);
 
-    fread(bytes, sizeof(uint8_t), length, input);
+    int fFire = flags & 1;
+    int fBugs = (flags & 2) / 2;
+    int fStat = (flags & 4) / 4;
+    int fCosm = (flags & 8) / 8;
 
-    for (int i = 0; i < length; i++)
+    printf("fire flag: %d, bug flag: %d, static electricity flag: %d, cosmic bit flip flag: %d\n", fFire, fBugs, fStat, fCosm);
+
+
+    uint8_t *bytes = malloc(sizeof(uint8_t) * length - 1);
+
+    fread(bytes, sizeof(uint8_t), length - 1, input);
+
+    time_t t;
+    srand((unsigned) time(&t));
+    cready = 0;
+
+    for (int i = 0; i < length - 1; i++)
     {
         printf("Byte: %d\n", bytes[i]);
+        executeResults r = executeByte(bytes[i]);
     }
     
 

@@ -1,6 +1,6 @@
 ADD $bruh 100
 
-SET $bruh 100
+SET $bruh 255
 
 SUB $bruh 100
 
@@ -11,3 +11,7 @@ PUT $bruh
 SHOW $bruh
 
 GOTO #jmp $bruh
+
+POINT $bruh 255
+
+ADD $bruh 1

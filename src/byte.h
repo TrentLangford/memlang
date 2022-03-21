@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+#include "kernel.h"
 
 typedef enum instructions
 {
@@ -32,7 +33,9 @@ int cpointer;
 uint8_t *command;
 int cready;
 
-executeResults executeByte(uint8_t byte);
+int byteNextLocation;
+
+executeResults executeBytes(uint8_t *bytes, int n);
 void executeCommand(uint8_t *command, int n);
 
 

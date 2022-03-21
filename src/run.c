@@ -43,11 +43,7 @@ int main(int argc, char **argv)
     srand((unsigned) time(&t));
     cready = 0;
 
-    for (int i = 0; i < length - 1; i++)
-    {
-        printf("Byte: %d\n", bytes[i]);
-        executeResults r = executeByte(bytes[i]);
-    }
+    executeBytes(bytes, length - 1);
     
 
 

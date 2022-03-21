@@ -5,6 +5,9 @@
 
 #define SLEEPTIME 500000
 
+#define setcontrolbyte(n) control_byte = n; write_control_byte = 1
+#define writebyte(n) if (results.bytec == current_size) { current_size += 64; results.bytes = realloc(results.bytes, sizeof(uint8_t) * current_size); } results.bytes[results.bytec++] = n;
+
 typedef struct compileResults_t
 {
     uint8_t *bytes;
@@ -38,6 +41,13 @@ int last_op;
 uint8_t next_location;
 
 extern uint8_t flags;
+
+typedef enum arg_t
+{
+    MEM,
+    VAR,
+    CONST
+} arg_t;
 
 compileResults_t compileTokens(token *tokens, int count);
 
